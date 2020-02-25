@@ -16,3 +16,20 @@ public class MongoConfig {
 
 }
 ```
+
+## 去除_class for Kotlin
+```kt
+@Configuration
+class MongoConfig {
+    
+    @Bean
+    fun converter(dbFactory: MongoDbFactory, context: MongoMappingContext, beanFactory: BeanFactory): MappingMongoConverter {
+        val dbRefResolver = DefaultDbRefResolver(dbFactory)
+        val converter = MappingMongoConverter(dbRefResolver, context)
+        converter.setCustomConversions(beanFactory.getBean(CustomConversions::class.java))
+        converter.setTypeMapper(DefaultMongoTypeMapper(null))
+        return converter
+    }
+
+}
+```
